@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="gb2312" ?>
+<!DOCTYPE taglib PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+  "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<taglib>
+	<tlibversion>1.0</tlibversion>
+	<jspversion>1.1</jspversion>
+	<shortname>webui</shortname>
+	<uri>/tags/web-ui</uri>
+    <tag>
+		<name>ui</name>
+		<tagclass>com.nrjh.framework.taglib.SkinTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+        <attribute>
+			<name>img</name>
+			<required>false</required>
+		</attribute>
+        <attribute>
+			<name>css</name>
+			<required>false</required>
+		</attribute>
+        <attribute>
+			<name>js</name>
+			<required>false</required>
+		</attribute>
+	</tag>
+	<tag>
+		<name>asset</name>
+		<tagclass>com.nrjh.framework.taglib.AssetTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>path</name>
+			<required>false</required>
+		</attribute>
+	</tag>
+	
+</taglib>	
+	
