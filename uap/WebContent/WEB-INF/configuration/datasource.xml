@@ -18,8 +18,8 @@
   <bean id="dataSource" name="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
     <property name="url" value="jdbc:oracle:thin:@10.1.1.8:1521:orcl"/>
-    <property name="username" value="mdb"/>
-    <property name="password" value="mdb123"/>
+    <property name="username" value="mar"/>
+    <property name="password" value="mar"/>
     <property name="maxActive" value="100"/>
     <property name="maxIdle" value="30"/>
     <property name="maxWait" value="5000"/>

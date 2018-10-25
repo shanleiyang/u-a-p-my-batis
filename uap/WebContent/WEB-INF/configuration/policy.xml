@@ -15,7 +15,9 @@
 	</web>
     
     <module-repository id="workspace" path="D:\\eroot\\SG_UAP2.8\\workspace_mybatis">
-        <module>mybatis</module>
+        <module>home</module>
+        <module>skins</module>
+        <module>webtlds_ext</module>
     </module-repository>
 	
 </platform-dynamic-policy>

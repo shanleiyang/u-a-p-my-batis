@@ -173,32 +173,39 @@ public class EntityGetProvider extends MapperTemplate {
 			//处理date between区间查询
 			if(columnMap != null && columnMap.get(property) != null 
 					&& columnMap.get(property).isAnnotationPresent(BetweenColumn.class)) {
-				sql.append("<if test=\"").append(column.getProperty()).append("Begin != null and ")
-				   .append(column.getProperty()).append("Begin != '' and ")
-				   .append(column.getProperty()).append("End != null and ")
-				   .append(column.getProperty()).append("End != '' \">");
+				sql.append("<if test=\"").append(column.getProperty()).append("_Begin != null and ")
+				   .append(column.getProperty()).append("_Begin != '' and ")
+				   .append(column.getProperty()).append("_End != null and ")
+				   .append(column.getProperty()).append("_End != '' \">");
 				sql.append(" and ").append(column.getColumn()).append(" between ")
-						.append("#{").append(column.getProperty()).append("Begin} and ")
-						.append("#{").append(column.getProperty()).append("End}");
+						.append("#{").append(column.getProperty()).append("_Begin} and ")
+						.append("#{").append(column.getProperty()).append("_End}");
 				sql.append("</if>");
 			}
 			//处理字段IN查询
-			if(columnMap != null && columnMap.get(property) != null 
-					&& columnMap.get(property).isAnnotationPresent(ArrayColumn.class)) {
-				sql.append("<if test=\"").append(column.getProperty()).append("Array != null\">");
-				sql.append(" and ").append(column.getColumn()).append(" in ");
-				sql.append("<foreach item=\"item\" index=\"index\" collection=\"").append(column.getProperty())
-					.append("Array\" open=\"(\" separator=\",\" close=\")\" >");
-				sql.append("#{item}");
-				sql.append("</foreach>");
-				sql.append("</if>");
-			}
+			sql.append("<if test=\"").append(column.getProperty()).append("_Array != null and ")
+			   .append(column.getProperty()).append("_Array").append(" != '' \">");
+			sql.append(" and ").append(column.getColumn()).append(" in ");
+			sql.append("<foreach item=\"item\" index=\"index\" collection=\"").append(column.getProperty())
+			.append("_Array\" open=\"(\" separator=\",\" close=\")\" >");
+			sql.append("#{item}");
+			sql.append("</foreach>");
+			sql.append("</if>");
 			//处理_$noequal 不等于的查询
 			sql.append("<if test=\"").append(column.getProperty()).append("_$noequal").append(" != null and ")
 			   .append(column.getProperty()).append("_$noequal").append(" != '' \">");
 			sql.append(" <![CDATA[ ");
 			sql.append(" and ").append(column.getColumn()).append(" <> ").append("#{").append(column.getProperty()).append("_$noequal}");
 			sql.append(" ]]> ");
+			sql.append("</if>");
+			//处理字段 OR 查询
+			sql.append("<if test=\"").append(column.getProperty()).append("_OrColumn").append(" != null and ")
+			   .append(column.getProperty()).append("_OrColumn").append(" != '' \">");
+			sql.append(" and  ");
+			sql.append("<foreach collection=\"").append(column.getProperty()).append("_OrColumn")
+			.append("\" index=\"key\"  item=\"item\" open=\"(\" close=\")\" separator=\"or\"> ");
+			sql.append(" ${key} = #{item} ");
+			sql.append("</foreach>");
 			sql.append("</if>");
 			
 			//后缀为_$like的模糊查询
@@ -261,21 +268,7 @@ public class EntityGetProvider extends MapperTemplate {
 			}
 			sql.append("</if>");
 		}
-		//处理字段 OR 查询
-		if(columnMap != null) {
-			Collection<Field> values = columnMap.values();
-			for(Field field : values) {
-				if(field.isAnnotationPresent(OrColumn.class)) {
-					sql.append("<if test=\"").append(field.getName()).append(" != null \">");
-					sql.append(" and  ");
-					sql.append("<foreach collection=\"").append(field.getName())
-					.append("\" index=\"key\"  item=\"item\" open=\"(\" close=\")\" separator=\"or\"> ");
-					sql.append(" ${key} = #{item} ");
-					sql.append("</foreach>");
-					sql.append("</if>");
-				}
-			}
-		}
+		
 		sql.append(" </where> ");
 
 		sql.append("<if test=\"orderfield != null and orderfield != ''\" >").append(" order by ")

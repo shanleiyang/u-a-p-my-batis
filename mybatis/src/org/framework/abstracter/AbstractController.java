@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.framework.mybatis.PageUtil;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.sgcc.uap.kernel.httpservice.adaptor.ModuleHttpServletRequestAdaptor;
 
 public abstract class AbstractController<E extends AbstractEntity> {
 	/**
@@ -31,7 +35,7 @@ public abstract class AbstractController<E extends AbstractEntity> {
 	/**
 	 * 默认跳转url
 	 */
-	protected String defaultUrl;
+	public String defaultUrl;
 	
 	protected AbstractController() {
 		RequestMapping requestMapping = AnnotationUtils.findAnnotation(getClass(), RequestMapping.class);
@@ -99,10 +103,10 @@ public abstract class AbstractController<E extends AbstractEntity> {
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
-    public String save(E bean) {
+    public String save(E bean, HttpServletRequest request) {
         getService().save(bean);
-        
-        return "redirect:/service" + defaultUrl;
+        String bundleName = ((ModuleHttpServletRequestAdaptor)request).getBundleContextPath();
+        return String.format("redirect:%s/rest%s", bundleName, defaultUrl);
     }
 	
 	/**
@@ -111,10 +115,11 @@ public abstract class AbstractController<E extends AbstractEntity> {
 	 * @return
 	 */
 	@RequestMapping("/delete")
-    public String delete(E bean) {
+    public String delete(E bean, HttpServletRequest request) {
         if (bean.getId() != null && !"".equals(bean.getId())) {
             getService().delete(bean.getId());
         }
-        return "redirect:/service" + defaultUrl;
+        String bundleName = ((ModuleHttpServletRequestAdaptor)request).getBundleContextPath();
+        return String.format("redirect:%s/rest%s", bundleName, defaultUrl);
     }
 }
