@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:module="http://www.sgcc.com.cn/schema/platform/module"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.sgcc.com.cn/schema/platform/module http://www.sgcc.com.cn/schema/platform/module/module.xsd">
+	<module:servlet id="XfireServlet">
+		<module:servlet-name>XfireServlet</module:servlet-name>
+		<module:servlet-class>com.sgcc.uap.xfire.spring.XFireSpringServletOSGI</module:servlet-class>
+		<module:servlet-mapping>/services/*</module:servlet-mapping>
+	</module:servlet>
+	
+</beans>

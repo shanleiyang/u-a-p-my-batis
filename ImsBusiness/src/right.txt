@@ -1,0 +1,37 @@
+<api name="DLXLSJNumDay"><value>2017</value></api><api name="DLQSJNumDay"><value>2017</value></api><api name="GDSJNumDay"><value>2017</value></api></Corporation></return>]]></ns1:out>
+      </ns1:getKPIValueResponse>
+   </soap:Body>
+</soap:Envelope>
+
+
+<![CDATA[
+ <info><CorporationCode>99</CorporationCode><Time>2016-09-07 11:22:00</Time>
+ <api name="BusinessUserRegNum"></api>
+<api name="BusinessSystemOnlineNum"></api>
+<api name="BusinessDayLoginNum"></api>
+<api name="BusinessVisitCount"></api>
+<api name="BusinessSystemResponseTime"></api>
+<api name="BusinessSystemRunningTime"></api>
+<api name="BusinessSystemSessionNum"></api>
+<api name="BusinessDataTableSpace"></api>
+<api name="BusinessSystemDBTime"></api>
+<api name="BusinessSystemLoginRoll"></api>
+<api name="BusinessSystemOnlineRoll"></api>
+<api name="SigMeterDetectRate"></api>
+<api name="ThrMeterDetectRate"></api>
+<api name="ItDetectRate"></api>
+<api name="ItArriveBatchNum"></api>
+<api name="TmnlArriveBatchNum"></api>
+<api name="ItDetectTaskNum"></api>
+<api name="TmnlDetectTaskNum"></api>
+<api name="MeterDistTaskNum"></api>
+<api name="ItDistTaskNum"></api>
+<api name="TmnlDistTaskNum"></api>
+</info>]]>
+ 		
+ 		
+ 		
+访问地址：
+http://localhost:9000/uap/ImsBusiness/services/MDSWebService?wsdl
+
+白名单地址： /**/pubutil/jsp/*

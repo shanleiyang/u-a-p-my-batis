@@ -1,0 +1,297 @@
+<%@page import="com.nrjh.framework.util.BspContextFactory,java.util.Calendar;"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="/tags/web-ui" prefix="uap"%>
+<!DOCTYPE html>
+<html lang="en">
+<!-- BEGIN HEAD -->
+<head>
+<meta http-equiv="Content-Type" charset="utf-8" />
+<title>整体健康度评价</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<meta content="" name="description" />
+<meta content="" name="author" />
+<%
+	String provinceCode = BspContextFactory.getComCode();
+	Calendar date = Calendar.getInstance();
+	String year = String.valueOf(date.get(Calendar.YEAR));
+	String month = String.valueOf(date.get(Calendar.MONTH)+1);
+	String ymDate = year+"-"+(month.length()==1?"0"+month:month);
+
+%>
+<script type="text/javascript">
+var skincontext = "<uap:skincontext />";
+var context="<%=request.getContextPath()%>";
+var GlobalParma={
+		provinceNo:'<%=provinceCode%>',
+		queryYear:'<%=year%>',
+		queryMonth:'<%=month%>',
+		dataUrl:context+"/rest/bigdata/dataProvider/getData",
+		mapType:<%=provinceCode%>,
+		mapPath:"<uap:skincontext />" + "/js/map/province/"+<%=provinceCode %>+".js"
+};
+var ProvHealt = function(){
+	this.charts = new Array();
+};
+ProvHealt.prototype = {
+		addObserve : function(obj){
+			this.charts.push(obj);
+		},
+		showChart : function(){
+			$.each(this.charts,function(i,n){
+				n.showChart();
+			});
+		}
+}
+var provHealt = new ProvHealt();
+//地图点击跳转
+function changeByMap(cityCode){
+	var year = GlobalParma.queryYear;
+	var month = GlobalParma.queryMonth;
+	window.parent.changeByChildren("/home/bigdata/showpage/jiankangdu/jiankangdu_ds.jsp");
+	window.location.href = context+"/bigdata/showpage/jiankangdu/jiankangdu_ds.jsp?cityCode="+cityCode+"&year="+year+"&month="+month;
+}
+function query(){
+	var arrmonth = new Date($("#arrmonth").val());
+	GlobalParma.queryYear=arrmonth.getFullYear();
+	GlobalParma.queryMonth=(arrmonth.getMonth()+1).toString();
+	vm.initChart();
+}
+</script>
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<uap:asset path="font-awesome.css,form.css" />
+<uap:mediacss path="home/style.css" />
+<!-- END GLOBAL MANDATORY STYLES -->
+<uap:asset path="jquery.js,echarts.min.js,jquery.slimscroll.min.js,/map/bigdatamap.js"/>
+<script src="<uap:skincontext/>/js/map/maplabel/<%=provinceCode %>_label.js"></script>
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body>
+	<div class="main" id="totalPageDiv">
+		<div class="filter_box"><b>筛选条件</b>
+			<span class="main_box">
+				  <input type="text" class="select_box" id="arrmonth" value="<%=ymDate %>" readonly="readonly" placeholder="年月"/> 
+			</span>			
+		<button class="se_btn" v-on:click="query"></button>			
+		</div>
+		<div class="dw_side">
+			<ul>
+				<li><span>累计安装量<b>（个）</b></span><i v-for="data in topInfo.INST_TOTAL_QTY" v-text="data"></i></li>
+				<li><span>当月运行量<b>（个）</b></span><i v-for="data in topInfo.CUR_MONTH_RQTY" v-text="data"></i></li>
+				<li><span>当月故障数<b>（个）</b></span><i v-for="data in topInfo.CUR_MONTH_FQTY" v-text="data"></i></li>
+				<li><span>累计故障数<b>（个）</b></span><i v-for="data in topInfo.FAULT_TOTAL_QTY" v-text="data"></i></li>
+				<li><span>供应商数量<b>（个）</b></span><i v-for="data in topInfo.SUPPLY_NUM" v-text="data"></i></li>
+				<li><span>型号数量<b>（个）</b></span><i v-for="data in topInfo.MODEL_NUM" v-text="data"></i></li>
+				<li><span>到货批次数<b>（个）</b></span><i v-for="data in topInfo.BATCH_NUM" v-text="data"></i></li>
+			</ul>
+		</div>
+		
+		<div class="zt_con">
+			<div class="ditu">
+				<div id="healprovmap" ></div>
+			</div>
+			
+			<div class="jkd">
+				<div class="jkdbox b1">
+					<div class="pmli">
+						<ul>
+							<li :class="{'on':isActive_0}" v-on:click="isActive_0=true"><a href="javascript:void(0)" >健康度</a></li>
+							<li :class="{'on':!isActive_0}" v-on:click="isActive_0=false"><a href="javascript:void(0)" >故障率</a></li>
+						</ul>
+					</div>						
+			      
+		      		<div class="list_a" :style="{display:isActive_0?'block':'none'}">
+		      			<h2><i>单位</i><i>健康度</i><i>排名</i></h2>
+		      			<ul>				      			
+					      	<li id="healthInfoLi">						      		
+						     	<p v-for="data in healthInfoList"><i v-text="data.NAME||'-'"></i><i v-text="data.VALUE||'-'"></i><i v-text="data.RANK_NO||'-'"></i></p>
+						    </li>
+					    </ul>
+				    </div>
+		    		<div class="list_a" :style="{display:isActive_0?'none':'block'}">	
+		    			<h2><i>单位</i><i>故障率(%)</i><i>排名</i></h2>
+		   				<ul>
+					      	<li id="malfunctionLi">							      	
+						     	<p v-for="data in malfunctionList"><i v-text="data.NAME||'-'"></i><i v-text="data.VALUE||'-'"></i><i v-text="data.RANK_NO||'-'"></i></p>
+						      </li>
+					      </ul>	
+				    </div>				    			   
+			  </div>			
+			</div>
+			
+			<div class="jkdpj">
+				<h2>健康度评价</h2>					
+				<div class="jkdpjbox b2">
+					<div>
+						<ul>
+							<li :class="{'on':isActive_1}" v-on:click="showMalfunctionChat"><a href="javascript:void(0)">故障分布</a></li>
+							<li :class="{'on':!isActive_1}" v-on:click="hideMalfunctionChat"><a href="javascript:void(0)">权重分析</a></li>
+						</ul>
+					</div>
+					<ul id="malfunctionRateUl" style="display:block;">
+				      	<li>
+					      	<h3 id="malfunctionDistribute"></h3>
+					    </li>			  	  
+			    	</ul>	
+			      	<ul id="healthEvaluateUl" >
+				      	<li>
+				      		<h3 id="healthWeightAnalyse"></h3>
+					    </li>			  	  
+			    	</ul>		    
+			    </div>					
+			</div>
+			
+			<div class="gzpj">
+				<h2>历史故障情况统计</h2>
+				<div id="malfunctionHistoryStat"></div>					
+			</div>				
+		</div>			
+	</div>
+	<!-- END CONTAINER -->
+	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+	<!-- BEGIN CORE PLUGINS -->
+	<uap:asset path="vue.min.js,form.js,ajaxsubmit.js" />
+	<script  type="text/javascript" src="<uap:ui js='bigdata/malfunctionHistoryStat.js'/>"></script>
+	<script  type="text/javascript" src="<uap:ui js='bigdata/malfunctionDistribute.js'/>"></script>
+	<script  type="text/javascript" src="<uap:ui js='bigdata/healthWeightAnalyse.js'/>"></script>
+	<script  type="text/javascript" src="<uap:ui js='bigdata/listDataGetter.js'/>"></script>
+	<!--[if lt IE 9]>
+	<script src="<uap:ui js='excanvas.min.js'/>"></script>
+	<script src="<uap:ui js='respond.min.js'/>"></script>  
+	<![endif]-->
+</body>
+<!-- END BODY -->
+<script type="text/javascript">	
+/** $("#healthInfoLi").slimScroll({
+	height: '320px'
+});
+$("#malfunctionLi").slimScroll({
+	height: '320px'
+}); */
+	var vm = new Vue({
+		el:'#totalPageDiv',
+		data:{
+			isActive_0:true,
+			isActive_1:true,
+			globalParam:GlobalParma,
+			topInfo:{
+				INST_TOTAL_QTY:'0',
+				CUR_MONTH_RQTY:'0',
+				CUR_MONTH_FQTY:'0',
+				FAULT_TOTAL_QTY:'0',
+				SUPPLY_NUM:'0',
+				MODEL_NUM:'0',
+				BATCH_NUM:'0'
+			},/*顶端指标数据*/
+			healthInfoList:[],/*健康度排名列表数据*/
+			malfunctionList:[]/*故障率排名列表数据*/
+		},
+		computed:{
+			listDataGetter:function(){return new ListDataGetter();},
+			malfunctionHistoryStat:function(){return new MalfunctionHistoryStat($("#malfunctionHistoryStat")[0],'ztjkd_lsgzqktj');},
+			healthWeightAnalyse: function(){return new HealthWeightAnalyse($("#healthWeightAnalyse")[0],'healthWeight');},
+			malfunctionDistribute: function(){return new MalfunctionDistribute($("#malfunctionDistribute")[0],'ztjkd_gzlxfb');},
+			bigdatamap:function(){return new BigDataMap($('#healprovmap')[0],'ztjkd_map');}
+		},
+		mounted: function(){
+			provHealt.addObserve(this.bigdatamap);
+			provHealt.addObserve(this.malfunctionHistoryStat);
+			provHealt.addObserve(this.healthWeightAnalyse);
+			provHealt.addObserve(this.malfunctionDistribute);
+		},
+		methods:{
+			initChart:function(){
+				this.globalParam = GlobalParma;
+				provHealt.showChart();
+				this.getTopInfo();
+				this.getHealthInfoList();
+				this.getMalfunctionList();
+			},
+			showMalfunctionChat:function(){
+				$('#malfunctionRateUl').show();
+				$('#healthEvaluateUl').hide();
+				this.isActive_1 = true;
+				this.malfunctionDistribute.reRender();
+			},
+			hideMalfunctionChat:function(){
+				$('#healthEvaluateUl').show();
+				$('#malfunctionRateUl').hide();
+				this.isActive_1 = false;
+				this.healthWeightAnalyse.reRender();
+			},
+			getTopInfo:function(){
+				var topParam1 = {/*顶端数据获取参数*/
+					"_TAGNO":"ztjkd_top_1",
+					year:this.globalParam.queryYear,
+					month:this.globalParam.queryMonth,
+					provinceNo:this.globalParam.provinceNo
+				};
+				var month = this.globalParam.queryMonth;
+				if(month<10) month='0'+month;
+				var  topParam2={/*顶端数据获取参数*/
+				"_TAGNO":"ztjkd_top_2",
+				ym:this.globalParam.queryYear+""+month,
+				};
+				var t_this = this;
+				this.listDataGetter.getDatas(this.globalParam.dataUrl,topParam1,function(rslt){
+					var rsltList = rslt.data;
+					var topData = t_this.topInfo;
+					if(rsltList!=null &&rsltList.length>0){
+						topData['INST_TOTAL_QTY'] = String(rsltList[0]['INST_TOTAL_QTY']).split('');
+						topData['CUR_MONTH_RQTY'] = String(rsltList[0]['CUR_MONTH_RQTY']).split('');
+						topData['CUR_MONTH_FQTY'] = String(rsltList[0]['CUR_MONTH_FQTY']).split('');
+						topData['FAULT_TOTAL_QTY'] = String(rsltList[0]['FAULT_TOTAL_QTY']).split('');
+					}
+					t_this.topInfo = topData;
+				});
+				this.listDataGetter.getDatas(this.globalParam.dataUrl,topParam2,function(rslt){
+					var rsltList = rslt.data;
+					var topData = t_this.topInfo;
+					if(rsltList!=null &&rsltList.length>0){
+						topData['SUPPLY_NUM'] = String(rsltList[0]['SUPPLY_NUM']).split('');
+						topData['MODEL_NUM'] = String(rsltList[0]['MODEL_NUM']).split('');
+						topData['BATCH_NUM'] = String(rsltList[0]['BATCH_NUM']).split('');
+					}
+					t_this.topInfo = topData;
+				});
+			},
+			getHealthInfoList:function(){
+				var healthInfoParam = {/*健康度排名列表参数*/
+						"_TAGNO":"ztjkd_jkdList",
+						year:this.globalParam.queryYear,
+						month:this.globalParam.queryMonth,
+						provinceNo:this.globalParam.provinceNo
+						};
+				var t_this = this;
+				this.listDataGetter.getDatas(this.globalParam.dataUrl,healthInfoParam,function(rslt){
+					t_this.healthInfoList = rslt.data;
+				});
+			},
+			getMalfunctionList:function(){
+				var malfunctionParam= {/*故障率排名列表参数*/
+						"_TAGNO":"ztjkd_gzlList",
+						year:this.globalParam.queryYear,
+						month:this.globalParam.queryMonth,
+						provinceNo:this.globalParam.provinceNo
+						};
+				var t_this = this;
+				this.listDataGetter.getDatas(this.globalParam.dataUrl,malfunctionParam,function(rslt){
+					t_this.malfunctionList = rslt.data;
+				});
+			}
+		}
+	});
+	vm.initChart();
+	$('#arrmonth').datetimepicker({
+	    language: "zh-CN",
+	    autoclose: 1,
+	    startView: 3,
+	    minView: 3,
+	    maxView: 4,
+	    endDate: new Date(),
+	    bootcssVer:3,
+	    format: "yyyy-mm"
+	});
+</script>
+</html>

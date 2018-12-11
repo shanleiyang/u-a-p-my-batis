@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:module="http://www.sgcc.com.cn/schema/platform/module" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  http://www.sgcc.com.cn/schema/platform/module http://www.sgcc.com.cn/schema/platform/module/module.xsd">  
+  <!--JDBC DataSource Example-->  
+  <!--JNDI DataSource Example-->  
+  <!--   
+     <bean id="dataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>sguap</value>
+		</property>
+		<property name="resourceRef">
+			<value>true</value>
+		</property>
+	</bean> 
+  -->  
+  <!-- 默认数据库 --> 
+  <module:service id="dataSourceService" beanId="dataSource" targetName="javax.sql.DataSource"/> 
+  <bean id="dataSource" name="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+    <property name="url" value="jdbc:oracle:thin:@10.1.1.8:1521:orcl"/>
+    <property name="username" value="mar"/>
+    <property name="password" value="mar"/>
+    <property name="maxActive" value="100"/>
+    <property name="maxIdle" value="30"/>
+    <property name="maxWait" value="5000"/>
+    <property name="defaultAutoCommit" value="true"/>
+    <property name="removeAbandoned" value="true"/>
+    <property name="removeAbandonedTimeout" value="60"/>
+    <property name="logAbandoned" value="true"/>
+  </bean>
+  <!-- 河北数据库 --> 
+  <module:service id="dataSourceService_13102" beanId="dataSource_13102" targetName="javax.sql.DataSource"/> 
+  <bean id="dataSource_13102" name="dataSource_13102" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+    <property name="url" value="jdbc:oracle:thin:@10.1.1.8:1521:orcl"/>
+    <property name="username" value="mar_hebei"/>
+    <property name="password" value="mar_hebei"/>
+    <property name="maxActive" value="100"/>
+    <property name="maxIdle" value="30"/>
+    <property name="maxWait" value="5000"/>
+    <property name="defaultAutoCommit" value="true"/>
+    <property name="removeAbandoned" value="true"/>
+    <property name="removeAbandonedTimeout" value="60"/>
+    <property name="logAbandoned" value="true"/>
+  </bean>
+  <!-- 湖南数据库 --> 
+  <module:service id="dataSourceService_43101" beanId="dataSource_43101" targetName="javax.sql.DataSource"/> 
+  <bean id="dataSource_43101" name="dataSource_43101" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+    <property name="url" value="jdbc:oracle:thin:@10.1.1.8:1521:orcl"/>
+    <property name="username" value="mar"/>
+    <property name="password" value="mar"/>
+    <property name="maxActive" value="100"/>
+    <property name="maxIdle" value="30"/>
+    <property name="maxWait" value="5000"/>
+    <property name="defaultAutoCommit" value="true"/>
+    <property name="removeAbandoned" value="true"/>
+    <property name="removeAbandonedTimeout" value="60"/>
+    <property name="logAbandoned" value="true"/>
+  </bean>
+  <!-- 浙江数据库 --> 
+  <module:service id="dataSourceService_33101" beanId="dataSource_33101" targetName="javax.sql.DataSource"/> 
+  <bean id="dataSource_33101" name="dataSource_33101" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+    <property name="url" value="jdbc:oracle:thin:@10.1.1.8:1521:orcl"/>
+    <property name="username" value="mar_zhejiang"/>
+    <property name="password" value="mar_zhejiang"/>
+    <property name="maxActive" value="100"/>
+    <property name="maxIdle" value="30"/>
+    <property name="maxWait" value="5000"/>
+    <property name="defaultAutoCommit" value="true"/>
+    <property name="removeAbandoned" value="true"/>
+    <property name="removeAbandonedTimeout" value="60"/>
+    <property name="logAbandoned" value="true"/>
+  </bean>
+   <!-- 新疆数据库 --> 
+  <module:service id="dataSourceService_65101" beanId="dataSource_65101" targetName="javax.sql.DataSource"/> 
+  <bean id="dataSource_65101" name="dataSource_65101" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+    <property name="url" value="jdbc:oracle:thin:@10.1.1.8:1521:orcl"/>
+    <property name="username" value="mar_xinjiang"/>
+    <property name="password" value="mar_xinjiang"/>
+    <property name="maxActive" value="100"/>
+    <property name="maxIdle" value="30"/>
+    <property name="maxWait" value="5000"/>
+    <property name="defaultAutoCommit" value="true"/>
+    <property name="removeAbandoned" value="true"/>
+    <property name="removeAbandonedTimeout" value="60"/>
+    <property name="logAbandoned" value="true"/>
+  </bean>
+   <!-- 四川数据库 --> 
+  <module:service id="dataSourceService_51101" beanId="dataSource_51101" targetName="javax.sql.DataSource"/> 
+  <bean id="dataSource_51101" name="dataSource_51101" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+    <property name="url" value="jdbc:oracle:thin:@10.1.1.8:1521:orcl"/>
+    <property name="username" value="mar_sichuan"/>
+    <property name="password" value="mar_sichuan"/>
+    <property name="maxActive" value="100"/>
+    <property name="maxIdle" value="30"/>
+    <property name="maxWait" value="5000"/>
+    <property name="defaultAutoCommit" value="true"/>
+    <property name="removeAbandoned" value="true"/>
+    <property name="removeAbandonedTimeout" value="60"/>
+    <property name="logAbandoned" value="true"/>
+  </bean>
+</beans>

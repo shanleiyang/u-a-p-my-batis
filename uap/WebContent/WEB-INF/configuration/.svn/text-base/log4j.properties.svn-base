@@ -1,0 +1,83 @@
+LOG_DIR=D:\\sguap-client
+log4j.rootLogger=DEBUG, platform1
+
+### direct log messages to platform ###
+log4j.appender.platform=org.apache.log4j.ConsoleAppender
+log4j.appender.platform.Target=System.out
+log4j.appender.platform.layout=org.apache.log4j.PatternLayout
+log4j.appender.platform.layout.ConversionPattern=[%d{ISO8601}] SG-UAP :%5p %c{1}:%L - %m%n
+
+log4j.appender.platform1=org.apache.log4j.RollingFileAppender
+log4j.appender.platform1.File=${LOG_DIR}/trace.log
+log4j.appender.platform1.MaxBackupIndex=100
+log4j.appender.platform1.MaxFileSize=5000000
+log4j.appender.platform1.layout=org.apache.log4j.PatternLayout
+log4j.appender.platform1.layout.ConversionPattern=[%d{ISO8601}] SG-UAP :%-5p %-x %X{user} %n     %m%n
+
+
+### direct log messages to thirdparty ###
+log4j.appender.thirdparty=org.apache.log4j.ConsoleAppender
+log4j.appender.thirdparty.Target=System.out
+log4j.appender.thirdparty.layout=org.apache.log4j.PatternLayout
+log4j.appender.thirdparty.layout.ConversionPattern=[%d{ISO8601}] Third's :%5p %c{1}:%L - %m%n
+
+log4j.appender.thirdparty1=org.apache.log4j.RollingFileAppender
+log4j.appender.thirdparty1.File=${LOG_DIR}/trace.log
+log4j.appender.thirdparty1.MaxBackupIndex=100
+log4j.appender.thirdparty1.MaxFileSize=5000000
+log4j.appender.thirdparty1.layout=org.apache.log4j.PatternLayout
+log4j.appender.thirdparty1.layout.ConversionPattern=[%d{ISO8601}] Third's :%-5p %-x %X{user} %n     %m%n
+
+
+### set log levels - for more verbose logging change 'info' to 'debug' ###
+log4j.additivity.com.sgcc=false
+log4j.logger.com.sgcc=info, platform
+log4j.logger.org.hibernate=error, thirdparty
+log4j.logger.org.apache=error, thirdparty
+log4j.logger.com.demo.mapper=DEBUG
+
+#spring\u65e5\u5fd7\u76d1\u63a7
+log4j.logger.org.springframework=DEBUG,spring
+log4j.additivity.org.springframework=false
+#spring\u65e5\u5fd7\u6253\u5370
+log4j.appender.spring=org.apache.log4j.RollingFileAppender
+log4j.appender.spring.File=${LOG_DIR}/spring.log
+log4j.appender.thirdparty1.MaxBackupIndex=10
+log4j.appender.spring.MaxFileSize=5000000
+log4j.appender.spring.layout=org.apache.log4j.PatternLayout
+log4j.appender.spring.layout.ConversionPattern==[%d{ISO8601}] %-5p %-x %X{user} %n     %m%n
+
+#mybatis\u65e5\u5fd7\u76d1\u63a7
+log4j.logger.org.apache.ibatis = DEBUG,mybatis
+log4j.logger.org.mybatis = DEBUG,mybatis
+log4j.additivity.org.apache.ibatis=false
+log4j.additivity.org.mybatis=false
+#mybatis\u65e5\u5fd7\u6253\u5370
+log4j.appender.mybatis=org.apache.log4j.RollingFileAppender
+log4j.appender.mybatis.File=${LOG_DIR}/mybatis.log
+log4j.appender.thirdparty1.MaxBackupIndex=10
+log4j.appender.mybatis.MaxFileSize=5000000
+log4j.appender.mybatis.layout=org.apache.log4j.PatternLayout
+log4j.appender.mybatis.layout.ConversionPattern==[%d{ISO8601}] %-5p %-x %X{user} %n     %m%n
+
+#\u6269\u5c55\u6846\u67b6\u65e5\u5fd7\u76d1\u63a7
+log4j.logger.org.framework = DEBUG,myframework
+log4j.additivity.org.framework=false
+#\u6269\u5c55\u6846\u67b6\u65e5\u5fd7
+log4j.appender.myframework=org.apache.log4j.RollingFileAppender
+log4j.appender.myframework.File=${LOG_DIR}/myframework.log
+log4j.appender.thirdparty1.MaxBackupIndex=10
+log4j.appender.myframework.MaxFileSize=5000000
+log4j.appender.myframework.layout=org.apache.log4j.PatternLayout
+log4j.appender.myframework.layout.ConversionPattern==[%d{ISO8601}] %-5p %-x %X{user} %n     %m%n
+
+#\u4e1a\u52a1\u65e5\u5fd7\u76d1\u63a7
+log4j.logger.com.nrjh = DEBUG,mynrjh
+log4j.additivity.com.nrjh=false
+#\u4e1a\u52a1\u65e5\u5fd7
+log4j.appender.mynrjh=org.apache.log4j.RollingFileAppender
+log4j.appender.mynrjh.File=${LOG_DIR}/nrjh.log
+log4j.appender.mynrjh.MaxBackupIndex=10
+log4j.appender.mynrjh.MaxFileSize=5000000
+log4j.appender.mynrjh.layout=org.apache.log4j.PatternLayout
+log4j.appender.mynrjh.layout.ConversionPattern==[%d{ISO8601}] %-5p %-x %X{user} %n     %m%n

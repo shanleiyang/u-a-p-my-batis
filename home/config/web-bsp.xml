@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:module="http://www.sgcc.com.cn/schema/platform/module"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.sgcc.com.cn/schema/platform/module http://www.sgcc.com.cn/schema/platform/module/module.xsd">
+  	
+    <!--统一权限验证 -->
+	<module:servletfilter id="hasPermissionFilter">
+		<module:filter-name>hasPermissionFilter</module:filter-name>
+		<module:filter-class>
+			com.nrjh.framework.permission.FilterAuthenticationEntryPoint
+		</module:filter-class>
+		<module:url-pattern>/*.jsp</module:url-pattern>
+		<module:url-pattern>/rest/*</module:url-pattern>
+		<module:init-param>
+			<module:param-name>ignoreURI</module:param-name>
+			<module:param-value>/public/home.jsp;/rest/manage/menu/getMenus;/public/warn.jsp;/loginout</module:param-value>
+		</module:init-param>
+		<module:init-param>
+			<module:param-name>warnURL</module:param-name>
+			<module:param-value>/home/public/warn.jsp</module:param-value>
+		</module:init-param>
+		<module:init-param>
+			<!-- 生产模式：true, 开发模式：false -->
+			<module:param-name>productModel</module:param-name>
+			<module:param-value>true</module:param-value>
+		</module:init-param>
+	</module:servletfilter>
+    
+</beans>
