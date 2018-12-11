@@ -102,4 +102,8 @@ class DefaultSkin implements Skin, Serializable {
 		sb.append(cssName);
 		return sb.toString();
 	}
+	
+	public String getRootPath() {
+		return this.rootUrl;
+	}
 }

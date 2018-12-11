@@ -78,7 +78,7 @@
 		</init-param>
 		<init-param>
 			<param-name>applicationWelcomePage</param-name>
-			<param-value>/workbench/default.jsp</param-value>
+			<param-value>/home/public/home.jsp</param-value>
 		</init-param>
 		<init-param>
 			<param-name>applicationErrorPage</param-name>

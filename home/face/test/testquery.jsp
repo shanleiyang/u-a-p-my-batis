@@ -73,7 +73,7 @@
 	<script type="text/javascript">	
 		var context="<%=request.getContextPath()%>";
 	</script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/test/testquery.js"></script>
+	<script type="text/javascript" src="./testquery.js"></script>
 </head>
 <body>
 	<div class="topdist"></div>

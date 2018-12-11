@@ -3,10 +3,55 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:module="http://www.sgcc.com.cn/schema/platform/module"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.sgcc.com.cn/schema/platform/module http://www.sgcc.com.cn/schema/platform/module/module.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.sgcc.com.cn/schema/platform/module 
+	http://www.sgcc.com.cn/schema/platform/module/module.xsd">
+    
+    <!-- ComponentFactory的bean配置在所有配置文件的第一行，确保其他配置文件的正确加载  -->
+	<bean id="bspFactory" class="com.sgcc.uap.utils.ComponentFactory" />
 
-    <!-- 数据库连接 -->
-    <module:reference id="dataSource" targetName="javax.sql.DataSource" filter="platform_service_idname=dataSourceService" />
+	<!-- 默认数据库连接 -->
+    <module:reference id="dataSource_default" targetName="javax.sql.DataSource" filter="platform_service_idname=dataSourceService" />
+    <!-- 河北数据库连接 -->
+    <module:reference id="dataSource_13102" targetName="javax.sql.DataSource" filter="platform_service_idname=dataSourceService_13102" />
+    <!-- 湖南数据库连接 -->
+    <module:reference id="dataSource_43101" targetName="javax.sql.DataSource" filter="platform_service_idname=dataSourceService_43101" />
+    <!-- 浙江数据库连接 -->
+    <module:reference id="dataSource_33101" targetName="javax.sql.DataSource" filter="platform_service_idname=dataSourceService_33101" />
+     <!-- 新疆数据库连接 -->
+    <module:reference id="dataSource_65101" targetName="javax.sql.DataSource" filter="platform_service_idname=dataSourceService_65101" />
+     <!-- 四川数据库连接 -->
+    <module:reference id="dataSource_51101" targetName="javax.sql.DataSource" filter="platform_service_idname=dataSourceService_51101" />
+    
+    <!-- 定义shardingDataSource, 及分库规则 -->
+	<bean id="shardingDataSource" class="org.framework.datasource.ShardingDataSource">
+		<!-- 设置多个数据源 -->
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<!-- 河北数据库连接 -->
+				<entry key="13102" value-ref="dataSource_13102"/>
+				<!-- 湖南数据库连接 -->
+				<entry key="43101" value-ref="dataSource_43101"/>
+				<!-- 浙江数据库连接 -->
+				<entry key="33101" value-ref="dataSource_33101"/>
+				<!-- 新疆数据库连接 -->
+				<entry key="65101" value-ref="dataSource_65101"/>
+				<!-- 四川数据库连接 -->
+				<entry key="51101" value-ref="dataSource_51101"/>
+			</map>
+		</property>
+		<!-- 设置默认的数据源 -->
+		<property name="defaultTargetDataSource" ref="dataSource_default"/>
+	</bean>
+	
+	<!-- 使用Spring的LazyConnectionDataSourceProxy代理AbstractRoutingDataSource，
+		延迟获取JDBC的Connection对象，否则Mybatis的Interceptor在拦截SQL时，
+		AbstractRoutingDataSource的determineCurrentLookupKey方法已经确定了数据源，也就不能进行切换了。 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+		<property name="targetDataSource">
+			<ref bean="shardingDataSource"/>
+		</property>
+	</bean>
 		
 </beans>

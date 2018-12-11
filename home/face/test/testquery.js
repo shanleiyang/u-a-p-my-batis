@@ -2,7 +2,7 @@
 var grid;
 $(function() {
 		var options = {};
-		var url = context+"/rest/test/query";
+		var url = context+"/home/rest/test/query";
 		grid = new L.FlexGrid("dataList",url); 
 		grid.init(options); //初始化datatable
 		
@@ -24,14 +24,14 @@ $(function() {
 	function query() {
 		var name = $("#name").val();
 
-		var url = context + "/rest/test/query";
+		var url = context + "/home/rest/test/query";
 		var param={"name":name};
 		url=encodeURI(url,"utf-8"); 
 	    grid.reload(url,param);
 	}	
 	//添加-修改
 	function modify(data){
-		var url = context + "/rest/test/edit";
+		var url = context + "/home/rest/test/edit";
 		if(data.id!=undefined&&data.id!=""){
 			url += "?"+"id="+data.id;
 		}
@@ -39,7 +39,7 @@ $(function() {
 	}
 	//删除
 	function del(data){
-		var url = context + "/rest/test/delete";
+		var url = context + "/home/rest/test/delete";
 		if(data.id!=undefined&&data.id!=""){
 			url += "?"+"id="+data.id;
 		}
@@ -61,10 +61,10 @@ $(function() {
 	function renderoptions(data, type, full) {
 		var editBtn = "";
 		var delBtn = "";
-		if(permissionHas("/rest/test/update")){
+		if(permissionHas("/home/rest/test/update")){
 			editBtn = "<a class=\"modify\">修改</a>";
 		}
- 		if(permissionHas("/rest/test/delete")){
+ 		if(permissionHas("/home/rest/test/delete")){
  			delBtn = "<a class=\"delete\">删除</a>";
  		}
  		if(editBtn&&delBtn){

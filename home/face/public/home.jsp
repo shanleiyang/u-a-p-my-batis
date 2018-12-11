@@ -1,116 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page import="java.util.Map,com.sgcc.uap.config.util.PlatformConfigUtil"%>
 <%@ taglib uri="/tags/web-ui" prefix="uap"%>
+<%
+Map userMap=(Map)session.getAttribute("user");
+String username = (String)userMap.get("name"); 
+String iscLoginUrl = PlatformConfigUtil.getString("ISC_LOGINURL");
+String serverUrl = String.format("%s://%s:%s%s", request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath());
+%>
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<html lang="en">
 <!-- BEGIN HEAD -->
 <head>
-	<meta charset="utf-8" />
-	<title>大数据项目</title>
-	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta content="" name="description" />
-	<meta content="" name="author" />
-	<!-- BEGIN GLOBAL MANDATORY STYLES -->
-	<uap:asset path="home/bootstrap.min.css,font-awesome.css,home/style-metro.css,home/style.css" />
-	<!-- END GLOBAL MANDATORY STYLES -->
-	<script type="text/javascript">	
-		var context="<%=request.getContextPath()%>";
-	</script>
+<meta http-equiv="Content-Type" charset="utf-8" />
+<title>大数据项目</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<meta content="" name="description" />
+<meta content="" name="author" />
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<uap:mediacss path="home/style.css" />
+<!-- END GLOBAL MANDATORY STYLES -->
+<script type="text/javascript">	
+	var username = "<%=username%>";
+	var iscLoginUrl = "<%=iscLoginUrl%>";
+	var serverUrl = "<%=serverUrl%>";
+	var context = "<%=request.getContextPath()%>";
+</script>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
-<body class="page-header-fixed page-full-width">
-	<!-- BEGIN HEADER -->
-	<div class="header navbar navbar-inverse navbar-fixed-top">
-		<!-- BEGIN TOP NAVIGATION BAR -->
-		<div class="navbar-inner">
-			<div class="container-fluid">
-				<!-- BEGIN LOGO -->
-				<a class="brand" href="#">
-				<img src="<uap:ui img='logo.png'/>" alt="logo" />
-				</a>
-				<!-- END LOGO -->
-				<!-- BEGIN HORIZANTAL MENU -->
-				<div class="navbar hor-menu hidden-phone hidden-tablet">
-					<div class="navbar-inner" id="menubar">
-						<ul class="nav">
-							<!-- 一级菜单 -->
-							<li v-for="firstmenu in menuList" v-bind:class="{'active': firstmenu.id == toFirstId}" v-on:click="clickMenu(firstMenu,firstmenu.id)">
-								<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
-									<span v-if="firstmenu.id == toFirstId" class="selected"></span>
-									{{firstmenu.name}}
-									<span class="arrow" v-if="firstmenu.childMenus && firstmenu.childMenus.length > 0"></span>
-								</a>
-								<ul class="dropdown-menu" v-if="firstmenu.childMenus && firstmenu.childMenus.length > 0">
-									<!-- 二级菜单 -->
-									<li v-for="secondmenu in firstmenu.childMenus" v-on:click="clickMenu(secondmenu,firstmenu.id,secondmenu.id)" v-bind:class="{'active': secondmenu.id == toSecondId , 'dropdown-submenu': (secondmenu.childMenus && secondmenu.childMenus.length > 0)}">
-										<a href="javascript:;">
-											{{secondmenu.name}}
-											<span class="arrow" v-if="secondmenu.childMenus && secondmenu.childMenus.length > 0"></span>
-										</a>
-										<ul class="dropdown-menu" v-if="secondmenu.childMenus && secondmenu.childMenus.length > 0">
-											<!-- 三级菜单 -->
-											<li v-for="threemenu in secondmenu.childMenus" v-on:click="clickMenu(threemenu,firstmenu.id,secondmenu.id,threemenu.id)" v-bind:class="{'active': threemenu.id == toThreeId}">
-												<a href="javascript:;">{{threemenu.name}}</a>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							
-						</ul>
-					</div>
-				</div>
-				<!-- END HORIZANTAL MENU -->
-				<!-- BEGIN TOP NAVIGATION MENU -->              
-				<ul class="nav pull-right">
-					<!-- BEGIN USER LOGIN DROPDOWN -->
-					<li class="dropdown user">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="fa fa-user fa-2x"></i>
-						<span class="username">Bob Nilson</span>
-						<i class="fa fa-angle-down"></i>
+<body>
+	<div class="content" id="mycontent">
+		<div class="top">
+			<div class="logo"><img src="<uap:ui img='logo.gif'/>" /></div>		
+			<div class="menu_box" id="navi">
+				<ul class="nav_tab">
+					<!-- 一级菜单 -->
+					<li v-for="firstmenu in menuList" v-bind:class="{'nav_on': (firstmenu.id == toFirstId || (selectUrl!=''&&firstmenu.url.indexOf(selectUrl)!=-1))}" v-on:click="clickMenu(firstmenu,firstmenu.id)">
+						<a href="javascript:;" v-text="firstmenu.name">
 						</a>
-						<ul class="dropdown-menu">
-							<li><a href="extra_profile.html"><i class="fa fa-user"></i> My Profile</a></li>
-							<li><a href="page_calendar.html"><i class="fa fa-calendar"></i> My Calendar</a></li>
-							<li><a href="inbox.html"><i class="fa fa-envelope"></i> My Inbox(3)</a></li>
-							<li><a href="#"><i class="fa fa-tasks"></i> My Tasks</a></li>
-							<li class="divider"></li>
-							<li><a href="extra_lock.html"><i class="fa fa-lock"></i> Lock Screen</a></li>
-							<li><a href="login.html"><i class="fa fa-key"></i> Log Out</a></li>
+					</li>
+				</ul>
+			</div>
+						
+			<div class="people">
+				<ul id="ple">
+					<li><a href="#"><img src="<uap:ui img='people.gif'/>" /></a>
+						<ul>
+							<li></li>
+							<li v-on:click="logout()"><a href="javascript:;"><i></i>退出</a></li>
 						</ul>
 					</li>
-					<!-- END USER LOGIN DROPDOWN -->
 				</ul>
-				<!-- END TOP NAVIGATION MENU --> 
 			</div>
+			<div class="hgun"><a href="#"><img src="<uap:ui img='img_06.gif'/>" /></a></div>
 		</div>
-		<!-- END TOP NAVIGATION BAR -->
-	</div>
-	<!-- END HEADER -->
-	<!-- BEGIN CONTAINER -->   
-	<div class="page-container row-fluid" >
-		<!-- BEGIN PAGE -->
-		<div class="page-content">
-			<!-- BEGIN PAGE CONTAINER-->
-			<div class="container-fluid">
-				<iframe id="mainFrame" name="mainFrame" src="<%=request.getContextPath()%>/public/introduce.jsp" frameborder="0" allowtransparency="true" width="100%" height="100%"></iframe>
-			</div>
-			<!-- END PAGE CONTAINER--> 
-		</div>
-		<!-- END PAGE -->    
+		<iframe id="mainFrame" name="mainFrame" scrolling="no" align="center" border="0" marginwidth="0" marginheight="0"
+			src="" frameborder="0" allowtransparency="true" height="100%" style="background-color: #090a1e;"></iframe>
 	</div>
 	<!-- END CONTAINER -->
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	<!-- BEGIN CORE PLUGINS -->
 	<uap:asset path="jquery.js,bootstrap.js,vue.min.js" />
-	<script type="text/javascript" src="<%=request.getContextPath()%>/public/home.js"></script>
+	<script type="text/javascript"
+		src="<%=request.getContextPath()%>/public/home.js"></script>
 	<!--[if lt IE 9]>
 	<script src="<uap:ui js='excanvas.min.js'/>"></script>
 	<script src="<uap:ui js='respond.min.js'/>"></script>  
-	<![endif]-->   
+	<![endif]-->
 </body>
 <!-- END BODY -->
 </html>

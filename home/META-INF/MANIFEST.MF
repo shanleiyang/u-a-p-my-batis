@@ -18,8 +18,8 @@ Require-Bundle: com.sgcc.uap.core,
  org.codehaus.jackson.core,
  org.codehaus.jackson.mapper,
  org.eclipse.osgi,
- com.sgcc.isc.base;bundle-version="2.0.0",
- com.sgcc.uap.integrate.isc;bundle-version="2.8.0"
+ com.sgcc.isc.base,
+ com.sgcc.uap.integrate.isc
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: javax.annotation,
  javax.servlet,

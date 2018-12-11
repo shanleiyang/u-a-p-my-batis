@@ -8,4 +8,6 @@ public interface Skin {
 
     public abstract String getCSS(String s);
     
+    public abstract String getRootPath();
+    
 }

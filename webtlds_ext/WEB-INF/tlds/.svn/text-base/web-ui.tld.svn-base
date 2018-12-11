@@ -33,6 +33,75 @@
 			<required>false</required>
 		</attribute>
 	</tag>
+	<tag>
+		<name>mediacss</name>
+		<tagclass>com.nrjh.framework.taglib.MediaCssTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>path</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>skincontext</name>
+		<tagclass>com.nrjh.framework.taglib.ContextTag</tagclass>
+	</tag>
+	<tag>
+		<name>orgSelect</name>
+		<tagclass>com.nrjh.framework.taglib.OrgSelectTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>id</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>true</required>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>isLink</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>childrenID</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>parentID</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>area</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>onchange</name>
+			<rtexprvalue>true</rtexprvalue>
+			<required>false</required>
+		</attribute>
+	</tag>
 	
 </taglib>	
 	

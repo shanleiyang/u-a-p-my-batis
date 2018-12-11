@@ -9,6 +9,10 @@
         <setting name="logImpl" value="COMMONS_LOGGING" />    
     </settings>
 	<plugins>
+		<plugin interceptor="org.framework.mybatis.plugins.ShardingJdbcPlugin">
+			<!-- 默认单位 -->
+			<property name="defaultNo" value="13102" />
+		</plugin>	
 		<plugin interceptor="org.framework.mybatis.PageInterceptor">
 			<!-- 是否返回总条数，默认为false，若设置为true可能会影响性能 -->
 			<property name="totalCount" value="true" />

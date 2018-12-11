@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.framework.mybatis.PageUtil;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sgcc.uap.kernel.httpservice.adaptor.ModuleHttpServletRequestAdaptor;
-
 public abstract class AbstractController<E extends AbstractEntity> {
+	private final static Log log = LogFactory.getLog(AbstractController.class);
 	/**
 	 * 获取service
 	 * @return
@@ -93,7 +94,7 @@ public abstract class AbstractController<E extends AbstractEntity> {
         if (bean.getId() != null && !"".equals(bean.getId())) {
         	resltBean = getService().get(bean.getId());
         }
-        model.put("data", resltBean);
+        
         return new ModelAndView(getEditJsp(), model);
     }
 	
@@ -105,8 +106,9 @@ public abstract class AbstractController<E extends AbstractEntity> {
 	@RequestMapping(value = "/save")
     public String save(E bean, HttpServletRequest request) {
         getService().save(bean);
-        String bundleName = ((ModuleHttpServletRequestAdaptor)request).getBundleContextPath();
-        return String.format("redirect:%s/rest%s", bundleName, defaultUrl);
+        // 获取当前模块名称
+        //String bundleName = ((ModuleHttpServletRequestAdaptor)request).getBundleContextPath();
+        return String.format("redirect:/rest%s", defaultUrl);
     }
 	
 	/**
@@ -119,7 +121,8 @@ public abstract class AbstractController<E extends AbstractEntity> {
         if (bean.getId() != null && !"".equals(bean.getId())) {
             getService().delete(bean.getId());
         }
-        String bundleName = ((ModuleHttpServletRequestAdaptor)request).getBundleContextPath();
-        return String.format("redirect:%s/rest%s", bundleName, defaultUrl);
+        // 获取当前模块名称
+        //String bundleName = ((ModuleHttpServletRequestAdaptor)request).getBundleContextPath();
+        return String.format("redirect:/rest%s", defaultUrl);
     }
 }
